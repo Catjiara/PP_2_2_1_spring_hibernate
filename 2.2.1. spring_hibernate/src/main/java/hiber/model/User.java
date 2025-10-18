@@ -6,26 +6,40 @@ import javax.persistence.*;
 @Table(name = "users")
 public class User {
 
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-   @Column(name = "name")
-   private String firstName;
+    @Column(name = "name")
+    private String firstName;
 
-   @Column(name = "last_name")
-   private String lastName;
+    @Column(name = "last_name")
+    private String lastName;
 
-   @Column(name = "email")
-   private String email;
+    @Column(name = "email")
+    private String email;
 
-   public User() {}
-   
-   public User(String firstName, String lastName, String email) {
-      this.firstName = firstName;
-      this.lastName = lastName;
-      this.email = email;
-   }
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    //@PrimaryKeyJoinColumn
+    private Car car;
+
+    public User() {
+    }
+
+    public User(String firstName, String lastName, String email, Car car) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        if (car == null) {
+            if (this.car != null) {
+                this.car.setUser(null);
+            }
+        } else {
+            car.setUser(this);
+        }
+        this.car = car;
+    }
+
 
    public Long getId() {
       return id;
@@ -58,4 +72,8 @@ public class User {
    public void setEmail(String email) {
       this.email = email;
    }
+
+   public Car getCar() {return this.car;}
+
+   public void setCar(Car car) {this.car = car;}
 }
