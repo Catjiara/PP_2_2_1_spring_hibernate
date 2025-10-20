@@ -25,21 +25,19 @@ public class User {
 
     public User() {
     }
+    public User(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
 
     public User(String firstName, String lastName, String email, Car car) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        if (car == null) {
-            if (this.car != null) {
-                this.car.setUser(null);
-            }
-        } else {
-            car.setUser(this);
-        }
+        car.setUser(this);
         this.car = car;
     }
-
 
    public Long getId() {
       return id;
@@ -76,4 +74,10 @@ public class User {
    public Car getCar() {return this.car;}
 
    public void setCar(Car car) {this.car = car;}
+
+   @Override
+   public String toString() {
+       return String.format("User id %s: %s %s, email: %s%s.\n", getId(), getFirstName(), getLastName(), getEmail(),
+               car != null ? String.format(", has a car %s, series %s", car.getModel(), car.getSeries()) : "");
+   }
 }
